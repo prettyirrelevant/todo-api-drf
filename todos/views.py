@@ -26,3 +26,12 @@ class TodoCreateView(CreateAPIView):
             status=status.HTTP_201_CREATED,
             headers=headers,
         )
+
+
+class TodoListView(ListAPIView):
+    """
+    Lists all todos.
+    """
+
+    queryset = Todo.objects.all()
+    serializer_class = TodoSerializer
