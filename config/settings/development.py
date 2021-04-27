@@ -34,6 +34,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+REST_FRAMEWORK = {"DEFAULT_RENDERER_CLASSES": ["todos.renderers.CustomRenderer"]}
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
