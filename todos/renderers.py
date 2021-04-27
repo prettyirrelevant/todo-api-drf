@@ -25,7 +25,10 @@ class CustomRenderer(JSONRenderer):
 
             new_data["status"] = "success"
             new_data["data"] = data.get("data") or data
-            new_data["message"] = data["message"]
+
+            # if response object does not contain `message`
+            if hasattr(new_data, "message"):
+                new_data["message"] = data["message"]
 
         new_data["status_code"] = renderer_context.get("response").status_code
         ret = json.dumps(

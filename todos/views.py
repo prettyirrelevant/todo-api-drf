@@ -1,17 +1,17 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 
 from .models import Todo
 from .serializers import TodoSerializer
 
 
-class TodoCreateView(CreateAPIView):
+class TodoCreateListView(ListCreateAPIView):
     """
-    Creates new todo.
+    Creates new todo & lists all todos.
     """
 
-    queryset = Todo
+    queryset = Todo.objects.all()
     serializer_class = TodoSerializer
 
     def create(self, request, *args, **kwargs):
@@ -27,11 +27,13 @@ class TodoCreateView(CreateAPIView):
             headers=headers,
         )
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
 
-class TodoListView(ListAPIView):
-    """
-    Lists all todos.
-    """
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
-    queryset = Todo.objects.all()
-    serializer_class = TodoSerializer
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
