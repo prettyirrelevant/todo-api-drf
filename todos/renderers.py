@@ -22,14 +22,15 @@ class CustomRenderer(JSONRenderer):
             new_data["message"] = data.get("detail") or data
 
         else:
+            print(data)
             new_data["status"] = "success"
 
-            # if response object contains `data` attribute
-            if hasattr(data, "data") or data:
+            # if response dict contains `data` key
+            if "data" in data.keys() or data:
                 new_data["data"] = data.get("data") or data
 
-            # if response object contains `message`
-            if hasattr(data, "message"):
+            # if response dict contains `message` key
+            if "message" in data.keys():
                 new_data["message"] = data["message"]
 
         new_data["status_code"] = renderer_context.get("response").status_code
