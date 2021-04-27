@@ -25,7 +25,7 @@ class CustomRenderer(JSONRenderer):
             new_data["status"] = "success"
 
             # if response object contains `data` attribute
-            if hasattr(data, "data"):
+            if hasattr(data, "data") or data:
                 new_data["data"] = data.get("data") or data
 
             # if response object contains `message`
